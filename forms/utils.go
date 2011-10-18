@@ -7,6 +7,7 @@ import "C"
 import "unsafe"
 
 type void unsafe.Pointer
+type Chtype C.chtype
 
 func boolToInt(b bool) C.int {
 	if b {

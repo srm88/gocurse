@@ -6,7 +6,6 @@ import "C"
 
 import (
 	"os"
-	. "curses"
 )
 
 type Text C.TEXT
