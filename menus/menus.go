@@ -1,11 +1,14 @@
 package menus
 
+// struct _win_st{};
 // #define _Bool int
 // #include <menu.h>
 import "C"
 
 import (
 	"os"
+	. "curses"
+	"unsafe"
 )
 
 type Text C.TEXT
@@ -164,10 +167,35 @@ func (menu *Menu) SetCurrentItem(item *Item) bool {
 	return isOk(C.set_current_item((*C.MENU)(menu),(*C.ITEM)(item)))
 }
 
+func (menu *Menu) SetWin(win *Window) bool {
+	return isOk(C.set_menu_win((*C.MENU)(menu),(*C.WINDOW)(win)))
+}
 
+func (menu *Menu) Win() *Window {
+	return (*Window)(C.menu_win((*C.MENU)(menu)))
+}
+
+func (menu *Menu) SetSub(win *Window) bool {
+	return isOk(C.set_menu_sub((*C.MENU)(menu),(*C.WINDOW)(win)))
+}
+
+func (menu *Menu) Sub() *Window {
+	return (*Window)(C.menu_sub((*C.MENU)(menu)))
+}
 
 func (item *Item) Value() bool {
 	return intToBool(C.item_value((*C.ITEM)(item)))
+}
+
+func (menu *Menu) Scale() (int, int, os.Error) {
+	var (
+		rows C.int
+		cols C.int
+	)
+	if C.scale_menu((*C.MENU)(menu), &rows, &cols) != C.OK {
+		return 0, 0, MenusError{"Form.Scale failed"}
+	}
+	return int(rows), int(cols), nil
 }
 
 func (item *Item) Visible() bool {
@@ -179,3 +207,12 @@ func (menu *Menu) Format(rows int, cols int) {
 	cCols := C.int(cols)
 	C.menu_format((*C.MENU)(menu),&cRows,&cCols)
 }
+
+func (item *Item) SetUserPtr(ptr unsafe.Pointer) bool {
+	return isOk(C.set_item_userptr((*C.ITEM)(item), ptr))
+}
+
+func (item *Item) UserPtr() unsafe.Pointer {
+	return unsafe.Pointer(C.item_userptr((*C.ITEM)(item)))
+}
+
