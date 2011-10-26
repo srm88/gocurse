@@ -1,18 +1,17 @@
-include $(GOROOT)/src/Make.inc
-
-TARG=curses
-
-CGOFILES=curses.go\
-		curses_defs.go
-
-CGO_LDFLAGS=-lncurses
-
-CLEANFILES+=
-
-include $(GOROOT)/src/Make.pkg
-
-# Simple test programs
-
-%: install %.go
-	$(GC) $*.go
-	$(LD) -o $@ $*.$O
+all:
+	make -C curses install
+	make -C forms  install
+	make -C menus  install
+	make -C panels install
+	
+clean:
+	make -C curses clean
+	make -C forms  clean
+	make -C menus  clean
+	make -C panels clean
+	
+nuke:
+	make -C curses nuke
+	make -C forms  nuke
+	make -C menus  nuke
+	make -C panels nuke
