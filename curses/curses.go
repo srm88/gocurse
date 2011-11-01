@@ -200,6 +200,11 @@ func (win *Window) Move(x, y int) {
 	C.wmove((*C.WINDOW)(win), C.int(y), C.int(x));
 }
 
+func (win *Window) Resize(rows, cols int) {
+	C.wresize((*C.WINDOW)(win), C.int(rows), C.int(cols));
+}
+
+
 func (w *Window) Keypad(tf bool) os.Error {
 	var outint int;
 	if tf == true {outint = 1;}
