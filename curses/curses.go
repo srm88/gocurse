@@ -256,3 +256,11 @@ func (win *Window) Box(verch, horch int) {
 func (win *Window) Background(colour int32) {
 	C.wbkgd((*C.WINDOW)(win), C.chtype(colour))
 }
+
+func (win *Window) Attron(flags int32) {
+	C.wattron((*C.WINDOW)(win), C.int(flags))
+}
+
+func (win *Window) Attroff(flags int32) {
+	C.wattroff((*C.WINDOW)(win), C.int(flags))
+}
