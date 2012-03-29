@@ -1,5 +1,5 @@
+// +build example
 // Sample code for Go ncurses bindings
-// author: errnoh
 package main
 
 import (
@@ -30,7 +30,8 @@ func main() {
     Tab:            Change focus
     Pgup/Pgdown:    Move selection (form/menu)
     Backspace/Del:  Delete characters (form)
-    Home/End:       Move within field (form)`
+    Home/End:       Move within field (form)
+    Ctrl-d:         Exit`
 	screen.Addstr(0, 0, menutext, Color_pair(currentColor))
 
 	createPanels()
@@ -160,7 +161,7 @@ func nextPanel() {
 	current++
 	current %= len(panels)
 
-        // Show/Hide cursor depending on which panel is active
+	// Show/Hide cursor depending on which panel is active
 	if current == 0 {
 		Curs_set(1)
 		form.Drive(REQ_END_LINE)
