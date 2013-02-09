@@ -257,6 +257,16 @@ func (win *Window) Background(colour int32) {
 	C.wbkgd((*C.WINDOW)(win), C.chtype(colour))
 }
 
+func (win *Window) Scrollok(bf bool) {
+  var flag int
+  if bf {
+    flag = 1
+  } else {
+    flag = 0
+  }
+  C.scrollok((*C.WINDOW)(win), C.int(flag))
+}
+
 func (win *Window) Attron(flags int32) {
 	C.wattron((*C.WINDOW)(win), C.int(flags))
 }
