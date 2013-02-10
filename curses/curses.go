@@ -174,12 +174,26 @@ func (win *Window) Getch() int {
 	return int(C.wgetch((*C.WINDOW)(win)))
 }
 
+func (win *Window) MvGetch(x, y int) int {
+  return int(C.mvwgetch((*C.WINDOW)(win), C.int(y), C.int(x)))
+}
+
 func (win *Window) Addch(x, y int, c int32, flags int32) {
 	C.mvwaddch((*C.WINDOW)(win), C.int(y), C.int(x), C.chtype(c)|C.chtype(flags))
 }
 
+func (win *Window) Echochar(c int32) {
+  C.wechochar((*C.WINDOW)(win), C.chtype(c))
+}
+
 // Since CGO currently can't handle varg C functions we'll mimic the
 // ncurses addstr functions.
+func (win *Window) RegAddstr(str string) {
+  for i := 0; i < len(str); i++ {
+		C.waddch((*C.WINDOW)(win), C.chtype(str[i]))
+  }
+}
+
 func (win *Window) Addstr(x, y int, str string, flags int32, v ...interface{}) {
 	var newstr string
 	if v != nil {
